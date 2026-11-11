@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //how to define a variable
-    //1. access modifier: public or private
-    //2. data type: int, float, bool, string
-    //3. variable name: camelCase
-    //4. value: optional
+    public AudioSource audioSource;
+    public AudioClip coinSound;
 
     private float playerSpeed;
     private float horizontalInput;
@@ -25,9 +23,35 @@ public class Player : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    //Updates text in UI when score is added
+    public class CoinScore : MonoBehaviour
+    {
+        public TextMeshProUGUI scoreText;
+
+        private int score = 0;
+
+        public void CollectCoin()
+        {
+            score++;
+            scoreText.text = "Score: " + score;
+        }
+    }
+    //Updates Score in UI when player collides with coin
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (other.CompareTag("Coin"))
+        {
+            ScoreManager.Instance.AddScore(1);
+            audioSource.PlayOneShot(coinSound);
+            Destroy(other.gameObject);
+            
+        }
+    }
+
     void Start()
     {
-        playerSpeed = 6f;
+        playerSpeed = 9f;
         //This function is called at the start of the game
         
     }
