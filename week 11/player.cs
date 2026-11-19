@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip coinSound;
 
+
+
     private float playerSpeed;
     private float horizontalInput;
     private float verticalInput;
@@ -22,6 +24,23 @@ public class Player : MonoBehaviour
     private float midPlayerLimit = 1.25f;
 
     public GameObject bulletPrefab;
+
+    public GameObject shieldVisual;
+    public bool hasShield = false;
+
+    public float shieldTimer = 0f;
+
+    public void ActivateShield()
+    {
+        
+    
+        shieldTimer = 0f;
+        hasShield = true;
+        shieldVisual.SetActive(true);
+
+    }
+
+  
 
     //Updates text in UI when score is added
     public class CoinScore : MonoBehaviour
@@ -49,6 +68,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    
+
     void Start()
     {
         playerSpeed = 9f;
@@ -61,7 +82,13 @@ public class Player : MonoBehaviour
         //This function is called every frame; 60 frames/second
         Movement();
         Shooting();
+        shieldTimer += Time.deltaTime;
 
+        if (shieldTimer >= 8f)
+        {
+            hasShield = false;
+            shieldVisual.SetActive(false);
+        }
     }
 
     void Shooting()
